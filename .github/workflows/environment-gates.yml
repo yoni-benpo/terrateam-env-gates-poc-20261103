@@ -1,0 +1,21 @@
+name: Environment gates POC
+
+on:
+  push:
+
+jobs:
+  gate:
+    name: Gate ${{ matrix.environment_name }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        environment_name: [poc-open, poc-main-only, poc-review]
+    environment: ${{ matrix.environment_name }}
+    permissions:
+      contents: read
+    steps:
+      - name: Record that the runner started
+        run: |
+          echo "Runner started for ${{ matrix.environment_name }} on ${GITHUB_REF_NAME}"
+          echo "Runner started for ${{ matrix.environment_name }} on ${GITHUB_REF_NAME}" >> "$GITHUB_STEP_SUMMARY"
